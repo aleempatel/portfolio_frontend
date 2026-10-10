@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Dev servers often serve this page at "/admin" (no trailing slash), which breaks relative CSS/JS paths.
+   Pin a <base> to the admin folder so admin.css, admin.js and ../js/config.js always resolve. */
+(function(){var p=location.pathname;p=(/\/$/.test(p)||/\.html?$/i.test(p))?p.replace(/[^\/]*$/,''):p+'/';document.write('<base href="'+p+'">');})();
+</script>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../favicon.png">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<section id="login" class="center">
+  <form id="loginForm" class="card login">
+    <h1>Admin <span class="grad">Login</span></h1>
+    <p class="hint">Sign in with the admin username and password from your backend <code>.env</code> (created by <code>npm run seed</code>).</p>
+    <div class="fld"><span class="lb">Username</span><input id="lu" autocomplete="username" required></div>
+    <div class="fld"><span class="lb">Password</span><input id="lp" type="password" autocomplete="current-password" required></div>
+    <details><summary>Backend URL</summary>
+      <div class="fld"><span class="lb">API base URL (no /api)</span><input id="lapi" placeholder="http://localhost:5000"></div>
+    </details>
+    <button class="btn p" type="submit">Sign in</button>
+    <p id="lerr" class="err"></p>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header class="top-bar">
+    <b class="brand">Portfolio <span class="grad">Admin</span></b>
+    <div class="acts"><a class="btn sm" href="../index.html" target="_blank" rel="noopener">View site</a><button class="btn sm" id="logoutBtn">Logout</button></div>
+  </header>
+  <div class="layout">
+    <nav id="side"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+<script src="../js/config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
