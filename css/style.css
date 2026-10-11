@@ -12,7 +12,13 @@ h2{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.15;margin:10px 0 14px;font-w
 .grad{background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
 nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:none;padding:0 var(--gx)}
-.logo{font-weight:800;letter-spacing:-.02em}.logo b{color:var(--ac)}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}.logo b{color:var(--ac)}
+.ap-mark{display:inline-grid;place-items:center;width:32px;height:32px;border:1px solid rgba(59,130,246,.7);border-radius:10px;background:linear-gradient(145deg,rgba(34,211,238,.13),rgba(37,99,235,.16));color:#fff;font:800 .78rem/1 'Space Grotesk',sans-serif;letter-spacing:-.08em;box-shadow:0 0 18px rgba(59,130,246,.12)}
+.logo-name{font-size:1rem}.logo-name b{color:var(--ac2)}
+.brand-tagline{margin-top:13px;color:var(--mu);font-size:.83rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase}.brand-tagline span{color:var(--ac2);padding:0 5px}
+.ap-profile{display:grid;place-items:center;font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:800;letter-spacing:-.1em;color:#f8fafc;background:radial-gradient(circle at 25% 15%,rgba(34,211,238,.22),transparent 36%),linear-gradient(145deg,#0b1220,#101b35 65%,#0b1020);border:1px solid rgba(59,130,246,.65);box-shadow:inset 0 0 35px rgba(59,130,246,.08),0 0 28px rgba(59,130,246,.1)}
+.ap-profile::first-letter{color:#fff}
+@media(max-width:600px){.logo{gap:7px}.ap-mark{width:29px;height:29px;border-radius:9px}.logo-name{font-size:.94rem}.brand-tagline{font-size:.68rem;letter-spacing:.07em}}
 .links{display:flex;gap:26px;font-size:.92rem;color:var(--mu)}
 .links a:hover{color:var(--tx)}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;border:1px solid var(--line);transition:.25s;cursor:pointer;background:transparent;color:var(--tx)}

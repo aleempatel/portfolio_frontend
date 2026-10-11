@@ -39,7 +39,7 @@ function renderHero(p) {
   if (parts.length) {
     const last = parts.length > 1 ? parts[parts.length - 1] : '', first = parts.length > 1 ? parts.slice(0, -1).join(' ') : '';
     q1('#heroName').innerHTML = first ? esc(first) + ' <span class="grad">' + esc(last) + '</span>' : '<span class="grad">' + esc(parts[0]) + '</span>';
-    q1('.logo').innerHTML = esc(parts[0]) + '<b>.</b>ds';
+    q1('.logo').innerHTML = '<span class="ap-mark" aria-hidden="true">AP</span><span class="logo-name">' + esc(name) + '</span>'; 
     q1('#footName').textContent = 'All rights reserved to ' + name;
     q1('#hvFile').textContent = parts[0].toLowerCase() + '.py';
     document.title = name + (p.title ? ' \u2014 ' + p.title : '');
