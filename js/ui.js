@@ -43,10 +43,10 @@ addEventListener('mousemove',e=>{g.style.transform=`translate(${e.clientX-210}px
 // The phrases come from the backend (window.ROLES, set by render.js); siteReady resolves once the API answered.
 window.siteReady=new Promise(r=>{window.siteReadyRes=r});
 (function(){const el=document.getElementById('typed');if(!el||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-const DEF=['Data Scientist','Data Analyst','AI & Machine Learning','Cloud Computing'],wait=ms=>new Promise(r=>setTimeout(r,ms));
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
 let p=0;
-(async function loop(){await Promise.race([window.siteReady,wait(3000)]);if(window.ROLES_OFF)return;el.textContent='';
-for(;;){const R=window.ROLES&&window.ROLES.length?window.ROLES:DEF,t=R[p%R.length];p++;
+(async function loop(){await Promise.race([window.siteReady,wait(3000)]);if(window.ROLES_OFF||!(window.ROLES&&window.ROLES.length))return;el.textContent='';
+for(;;){const R=window.ROLES,t=R[p%R.length];p++;
 for(let i=1;i<=t.length;i++){el.textContent=t.slice(0,i);await wait(85)}
 await wait(1500);
 for(let i=t.length-1;i>=0;i--){el.textContent=t.slice(0,i);await wait(45)}

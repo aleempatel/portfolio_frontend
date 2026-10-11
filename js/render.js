@@ -1,5 +1,5 @@
-/* Renders the whole site from the backend.
-   If the API is unreachable (or the database is still empty) the static HTML stays as the fallback. */
+/* Renders the whole site from the backend. The HTML itself holds no content: every section stays hidden
+   until the admin panel has data for it (an empty database shows an empty page). */
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const safeUrl = (u) => {
   u = String(u || '').trim();
@@ -39,10 +39,14 @@ function renderHero(p) {
   if (parts.length) {
     const last = parts.length > 1 ? parts[parts.length - 1] : '', first = parts.length > 1 ? parts.slice(0, -1).join(' ') : '';
     q1('#heroName').innerHTML = first ? esc(first) + ' <span class="grad">' + esc(last) + '</span>' : '<span class="grad">' + esc(parts[0]) + '</span>';
-    q1('.logo').innerHTML = '<span class="ap-mark" aria-hidden="true">AP</span><span class="logo-name">' + esc(name) + '</span>'; 
+    const initials = parts.slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+    q1('.logo').innerHTML = '<span class="ap-mark" aria-hidden="true">' + esc(initials) + '</span><span class="logo-name">' + esc(name) + '</span>';
+    q1('.logo').setAttribute('aria-label', name + ' home'); show(q1('.logo'), true);
     q1('#footName').textContent = 'All rights reserved to ' + name;
     q1('#hvFile').textContent = parts[0].toLowerCase() + '.py';
     document.title = name + (p.title ? ' \u2014 ' + p.title : '');
+  } else {
+    q1('#heroName').innerHTML = ''; q1('.logo').innerHTML = ''; show(q1('.logo'), false); q1('#footName').textContent = '';
   }
   const roles = (p.roles || []).filter(Boolean), list = roles.length ? roles : (p.title ? [p.title] : []);
   const role = q1('.role');
@@ -199,11 +203,12 @@ function renderStats(c) {
 function renderAll(d) {
   const p = d.profile || {}, skills = d.skills || [], projects = d.projects || [], edu = d.education || [], courses = d.courses || [], exp = d.experience || [];
   window.SITE = { profile: p };
-  if (!(p.name || skills.length || projects.length)) return false;   // empty database: keep the static design content
   renderHero(p); renderAbout(p);
   const domains = renderSkills(skills);
   renderProjects(projects); renderExperience(exp); renderEducation(edu); renderCerts(courses); renderContact(p);
   renderStats({ projects: projects.length, certs: courses.length, domains: domains, tech: skills.length });
+  show(q1('#ctaProjects'), projects.length > 0);                                   // "View Projects" only when there are projects
+  document.querySelectorAll('[data-resume]').forEach((a) => show(a, !!p.resumeUrl)); // "Download Resume" only when a resume is uploaded
   return true;
 }
 
@@ -216,5 +221,5 @@ async function loadSite() {
     const ok = renderAll({ profile, skills, projects, education, courses, experience });
     if (ok && window.UIRefresh) UIRefresh();
     return ok;
-  } catch (e) { return false; }   // API offline: static fallback stays
+  } catch (e) { return false; }   // API offline: sections simply stay hidden
 }

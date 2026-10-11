@@ -20,9 +20,11 @@ form.addEventListener('submit', async (e) => {
   } catch (err) {
     fst.className = 'fst err';
     if (err.network) {   // server unreachable: offer Gmail compose with everything pre-filled
-      const to = (window.SITE && SITE.profile && SITE.profile.email) || 'aleempatel4829@gmail.com';
-      const link = gmailCompose(to, payload.subject, payload.message + '\n\n- ' + payload.name + ' (' + payload.email + ')');
-      fst.innerHTML = 'Server unreachable. <a href="' + esc(link) + '" target="_blank" rel="noopener" style="text-decoration:underline">Open Gmail compose instead</a>';
+      const to = (window.SITE && SITE.profile && SITE.profile.email) || '';
+      if (to) {
+        const link = gmailCompose(to, payload.subject, payload.message + '\n\n- ' + payload.name + ' (' + payload.email + ')');
+        fst.innerHTML = 'Server unreachable. <a href="' + esc(link) + '" target="_blank" rel="noopener" style="text-decoration:underline">Open Gmail compose instead</a>';
+      } else fst.textContent = 'Server unreachable. Please try again later.';
     } else fst.textContent = err.message;
   } finally { btn.disabled = false; btn.textContent = 'Transmit Message'; }
 });
