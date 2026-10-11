@@ -42,4 +42,12 @@ document.getElementById('rClose').addEventListener('click', closeResume);
 addEventListener('keydown', (e) => { if (e.key === 'Escape' && rm.classList.contains('open')) closeResume(); });
 
 /* 3) Everything else (hero, about, skills, projects, education, certifications, contact) comes from the API. */
-loadSite().finally(() => window.siteReadyRes && window.siteReadyRes());
+/* 4) Always start at the hero. The page grows while the content loads, which can make the browser jump back to an
+      old scroll position or a #section, so jump to the top again once everything is in place - unless the visitor
+      has already started scrolling by themselves. */
+let userMoved = false;
+['wheel', 'touchstart', 'keydown', 'mousedown'].forEach((ev) => addEventListener(ev, () => { userMoved = true; }, { once: true, passive: true }));
+const toTop = () => { if (!userMoved) scrollTo({ top: 0, left: 0, behavior: 'instant' }); };
+loadSite().finally(() => { toTop(); requestAnimationFrame(toTop); window.siteReadyRes && window.siteReadyRes(); });
+addEventListener('load', toTop);
+addEventListener('pageshow', (e) => { if (e.persisted) { userMoved = false; toTop(); } });   // back/forward cache

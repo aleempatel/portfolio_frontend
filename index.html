@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* Always open at the hero: ignore the browser's restored scroll position and any #section in the URL */
+try{history.scrollRestoration='manual'}catch(e){}
+if(location.hash){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+try{scrollTo({top:0,left:0,behavior:'instant'})}catch(e){scrollTo(0,0)}
+</script>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 <title>Aleem Patel — Data Science & AI</title>
@@ -163,6 +169,6 @@
 <script src="js/projects.js?v=8"></script>
 <script src="js/api.js"></script>
 <script src="js/render.js?v=10"></script>
-<script src="js/main.js?v=10"></script>
+<script src="js/main.js?v=11"></script>
 </body>
 </html>
