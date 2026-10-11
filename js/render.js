@@ -39,7 +39,7 @@ function renderHero(p) {
   if (parts.length) {
     const last = parts.length > 1 ? parts[parts.length - 1] : '', first = parts.length > 1 ? parts.slice(0, -1).join(' ') : '';
     q1('#heroName').innerHTML = first ? esc(first) + ' <span class="grad">' + esc(last) + '</span>' : '<span class="grad">' + esc(parts[0]) + '</span>';
-    q1('.logo').innerHTML = '<span class="ap-mark" aria-hidden="true">AP</span><span class="logo-name">' + esc(name) + '</span>'; 
+    q1('.logo').innerHTML = '<span class="ap-mark" aria-hidden="true">AP</span><span class="logo-name">' + (first ? esc(first) + ' <b>' + esc(last) + '</b>' : esc(parts[0])) + '</span>';
     q1('#footName').textContent = 'All rights reserved to ' + name;
     q1('#hvFile').textContent = parts[0].toLowerCase() + '.py';
     document.title = name + (p.title ? ' \u2014 ' + p.title : '');
@@ -95,12 +95,6 @@ function renderSkills(list) {
   q1('#skillGrid').innerHTML = Array.from(groups).map(([c, names]) =>
     '<div class="tilt rv"><div class="ico">' + CAT_ICONS[i++ % CAT_ICONS.length] + '</div><h3>' + esc(c) + '</h3><ul>' +
     names.map(skillRow).join('') + '</ul></div>').join('');
-  if (list.length) {
-    /* the hero code card is narrow: use short skill names so a long one (e.g. "Microsoft Office Suite") never gets cut off */
-    const short = list.filter((s) => String(s.name).length <= 12), pick = (short.length ? short : list).slice(0, 3);
-    const top = pick.map((s) => { const n = String(s.name); return '<span class="st">"' + esc(n.length > 12 ? n.slice(0, 11) + '\u2026' : n) + '"</span>'; }).join(', ');
-    q1('#hvCode').innerHTML = '<span class="kw">class</span> <span class="fnm">DataScientist</span>:\n    skills = [' + top + ']\n\n    <span class="kw">def</span> <span class="fnm">solve</span>(self, data):\n        data = clean(data)\n        model = train(data)\n        <span class="kw">return</span> deploy(model)<b class="cur"></b>';
-  }
   return groups.size;
 }
 
