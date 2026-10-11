@@ -24,6 +24,9 @@ addEventListener('keydown',e=>{if(!dk.classList.contains('open'))return;if(e.key
 // stacked project cards: previous card scales down & dims as next slides over it
 let cards=[],raf=0;
 function initStack(){cards=[...document.querySelectorAll('.proj')];cards.forEach(c=>{if(!c._d){const d=document.createElement('span');d.className='dm';c.appendChild(d);c._d=d;c._s=1;c._o=0}c._ts=1;c._to=0});calc()}
-function calc(){const H=innerHeight,mobile=innerWidth<=860;cards.forEach((c,i)=>{const nx=cards[i+1];if(!nx||getComputedStyle(c).position!=='sticky'){c._ts=1;c._to=0;return}const top=(mobile?76:90)+(i+1)*(mobile?18:26),p=Math.min(1,Math.max(0,(H-nx.getBoundingClientRect().top)/(H-top)));c._ts=1-p*.06;c._to=p*.45});if(!raf)raf=requestAnimationFrame(tick)}
+function calc(){const H=innerHeight,mobile=innerWidth<=860,base=mobile?76:90,step=mobile?18:26;
+/* a card taller than the screen (common on phones) pins by its BOTTOM edge, so the whole project (picture, Full Deck, View Code) is seen before the next card slides over it */
+cards.forEach((c,i)=>{if(getComputedStyle(c).position==='sticky'){const t=Math.round(Math.min(base+i*step,H-c.offsetHeight-16));if(c._pt!==t){c._pt=t;c.style.top=t+'px'}}else if(c._pt!==undefined){c._pt=undefined;c.style.top=''}});
+cards.forEach((c,i)=>{const nx=cards[i+1];if(!nx||getComputedStyle(c).position!=='sticky'){c._ts=1;c._to=0;return}const top=nx._pt!==undefined?nx._pt:base+(i+1)*step,p=Math.min(1,Math.max(0,(H-nx.getBoundingClientRect().top)/(H-top)));c._ts=1-p*.06;c._to=p*.45});if(!raf)raf=requestAnimationFrame(tick)}
 function tick(){let busy=0;cards.forEach(c=>{c._s+=(c._ts-c._s)*.3;c._o+=(c._to-c._o)*.3;if(Math.abs(c._ts-c._s)>.0005||Math.abs(c._to-c._o)>.002)busy=1;else{c._s=c._ts;c._o=c._to}c.style.transform=c._s===1?'':`translate3d(0,0,0) scale(${c._s})`;c._d.style.opacity=c._o});raf=busy?requestAnimationFrame(tick):0}
-addEventListener('scroll',calc,{passive:true});addEventListener('resize',calc);initStack();
+addEventListener('scroll',calc,{passive:true});addEventListener('resize',calc);addEventListener('load',calc);initStack();
