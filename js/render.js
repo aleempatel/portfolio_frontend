@@ -88,7 +88,8 @@ function skillRow(s) {
 }
 
 function renderSkills(list) {
-  show(q1('#skills'), list.length > 0); navLink('skills', list.length > 0);
+  if (!list.length) return 0;   // nothing added in the admin panel yet: keep the built-in section as it is
+  show(q1('#skills'), true); navLink('skills', true);
   const groups = new Map();
   list.forEach((s) => { const c = (s.category || '').trim() || 'Other'; if (!groups.has(c)) groups.set(c, []); groups.get(c).push(s); });
   let i = 0;
@@ -99,7 +100,8 @@ function renderSkills(list) {
 }
 
 function renderProjects(list) {
-  show(q1('#projects'), list.length > 0); navLink('projects', list.length > 0);
+  if (!list.length) return;     // nothing added in the admin panel yet: keep the built-in projects (and their image decks)
+  show(q1('#projects'), true); navLink('projects', true);
   DECKS = list.map((p) => {
     const imgs = (p.images && p.images.length) ? p.images : (p.imageUrl ? [p.imageUrl] : []);
     return { t: p.title, d: p.longDescription || '', slides: imgs.map((u) => ({ s: u, c: '' })) };
@@ -145,7 +147,8 @@ function renderExperience(list) {
 }
 
 function renderEducation(list) {
-  show(q1('#education'), list.length > 0); navLink('education', list.length > 0);
+  if (!list.length) return;     // nothing added in the admin panel yet: keep the built-in section
+  show(q1('#education'), true); navLink('education', true);
   q1('#eduList').innerHTML = list.map((e) => {
     const end = (e.endDate || '').trim(), ongoing = !end || /present|progress|ongoing|current/i.test(end);
     const range = [e.startDate, ongoing ? 'Present' : end].filter(Boolean).join(' \u2013 ');
@@ -156,7 +159,8 @@ function renderEducation(list) {
 }
 
 function renderCerts(list) {
-  show(q1('#certs'), list.length > 0); navLink('certs', list.length > 0);
+  if (!list.length) return;     // nothing added in the admin panel yet: keep the built-in section
+  show(q1('#certs'), true); navLink('certs', true);
   q1('#certList').innerHTML = list.map((c, i) => {
     const url = safeUrl(c.certificateUrl);
     const sub = [c.provider, c.date].filter(Boolean).map(esc).join(' \u00b7 ');
@@ -197,7 +201,8 @@ function renderAll(d) {
   renderHero(p); renderAbout(p);
   const domains = renderSkills(skills);
   renderProjects(projects); renderExperience(exp); renderEducation(edu); renderCerts(courses); renderContact(p);
-  renderStats({ projects: projects.length, certs: courses.length, domains: domains, tech: skills.length });
+  const cnt = (sel) => document.querySelectorAll(sel).length;   // sections still showing built-in content are counted from the page
+  renderStats({ projects: projects.length || cnt('#projList .proj'), certs: courses.length || cnt('#certList .cert'), domains: domains || cnt('#skillGrid .tilt'), tech: skills.length || cnt('#skillGrid li') });
   return true;
 }
 
