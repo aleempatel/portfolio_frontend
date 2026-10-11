@@ -282,3 +282,69 @@ section[style*="--bg2"]{background:color-mix(in srgb,var(--bg2) 45%,transparent)
   :root .tilt,:root .cert,:root .pv,:root .chip{box-shadow:0 4px 16px rgba(0,0,0,.18),var(--g-hi)}
   :root[data-theme="light"] .tilt,:root[data-theme="light"] .cert,:root[data-theme="light"] .pv,:root[data-theme="light"] .chip{box-shadow:0 4px 16px rgba(88,48,160,.1),var(--g-hi)}
 }
+
+/* ===== Premium polish: signature hero orb, breathing room, project cards, refined motion ===== */
+:root{--ease:cubic-bezier(.22,1,.36,1)}
+
+/* --- 1) signature hero visual: the 3D orb sits behind the code card --- */
+.orb{position:absolute;z-index:0;left:52%;top:44%;width:138%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;animation:orbIn 1.8s ease .5s backwards}
+@keyframes orbIn{from{opacity:0}}
+:root[data-theme="light"] .orb{opacity:.9}
+
+/* --- 2) breathing room: calmer decoration, more space around headings and cards --- */
+section{padding:clamp(84px,12vh,136px) 0}
+h2{margin:14px 0 18px;line-height:1.12;text-wrap:balance}
+.sub{line-height:1.75}
+.grid3{gap:clamp(20px,2.4vw,32px);margin-top:clamp(36px,5vw,60px)}
+.tilt{padding:clamp(24px,2.4vw,34px)}
+.certs{gap:clamp(16px,2vw,24px)}
+.stats{padding-block:72px}
+#hero:before{opacity:.26}
+#bg{opacity:.42}
+.glow{opacity:.7}
+.ring{opacity:.3}
+#cg{opacity:.7}
+#hero .lead{max-width:54ch;line-height:1.75;margin-top:18px}
+#hero .cta{margin:38px 0 30px}
+#hero .pill{margin-bottom:26px}
+#hero .tag{margin-bottom:18px}
+#hero .brand-tagline{margin-top:16px}
+
+/* --- 3) project cards: one proportion, clear hierarchy, polished thumbnails --- */
+.proj{grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:clamp(28px,4vw,56px);padding:clamp(26px,3vw,44px);border-radius:30px;min-height:clamp(420px,62vh,560px)}
+.proj .num{display:flex;align-items:center;gap:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ac2);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+.proj .num:after{content:"";width:48px;height:1px;background:linear-gradient(90deg,var(--ac2),transparent)}
+.proj h3{font-size:clamp(1.5rem,2.4vw,2.1rem);letter-spacing:-.02em;line-height:1.15;margin:14px 0}
+.proj .sub{max-width:46ch;font-size:.98rem;line-height:1.7}
+.proj .tags{gap:7px}
+.proj .tags a{font-size:.72rem;padding:5px 12px;letter-spacing:.02em}
+.proj .pact{margin-top:28px}
+.shot{border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.28);isolation:isolate}
+.shot img{transition:transform .9s var(--ease)}
+.shot:not(:disabled):hover img{transform:scale(1.045)}
+.shot:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);background:linear-gradient(180deg,transparent 62%,rgba(8,5,14,.4))}
+:root[data-theme="light"] .shot{box-shadow:0 18px 44px rgba(88,48,160,.16)}
+:root[data-theme="light"] .shot:after{box-shadow:inset 0 0 0 1px rgba(124,58,237,.1);background:linear-gradient(180deg,transparent 70%,rgba(26,16,48,.16))}
+.shot span{z-index:1}
+@media(max-width:860px){section{padding:76px 0}.proj{grid-template-columns:minmax(0,1fr);min-height:0;padding:22px;border-radius:24px;gap:24px}.proj .sub{max-width:none}}
+
+/* --- 4) refined motion: one easing curve, staggered reveals, hero entrance --- */
+.rv{opacity:0;transform:translateY(28px);transition:border-color .3s,box-shadow .3s}
+.rv.on{opacity:1;transform:none;animation:rise .95s var(--ease) var(--rd,0s) backwards}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}}
+.tilt.rv{transition:transform .25s var(--ease),border-color .3s,box-shadow .3s}
+.grid3>.rv:nth-child(3n+2){--rd:.09s}.grid3>.rv:nth-child(3n+3){--rd:.18s}
+.certs>.rv:nth-child(4n+2){--rd:.07s}.certs>.rv:nth-child(4n+3){--rd:.14s}.certs>.rv:nth-child(4n+4){--rd:.21s}
+.tl>.rv:nth-child(n+2){--rd:.08s}
+#hero .wrap>*{animation:heroIn 1s var(--ease) backwards}
+#hero .wrap>*:nth-child(1){animation-delay:.05s}#hero .wrap>*:nth-child(2){animation-delay:.12s}#hero .wrap>*:nth-child(3){animation-delay:.19s}
+#hero .wrap>*:nth-child(4){animation-delay:.26s}#hero .wrap>*:nth-child(5){animation-delay:.33s}#hero .wrap>*:nth-child(6){animation-delay:.4s}
+#hero .wrap>*:nth-child(7){animation-delay:.47s}#hero .wrap>*:nth-child(n+8){animation-delay:.54s}
+@keyframes heroIn{from{opacity:0;transform:translateY(22px)}}
+.hv .tc{animation:cardIn 1.1s var(--ease) .3s backwards}
+@keyframes cardIn{from{opacity:0;transform:translateY(26px) scale(.97)}}
+.btn{transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .3s,background .3s,color .3s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+html.theme-fade,html.theme-fade *,html.theme-fade *:before,html.theme-fade *:after{transition:background-color .5s var(--ease),color .5s var(--ease),border-color .5s var(--ease),fill .5s,stroke .5s,box-shadow .5s var(--ease)!important}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}}
