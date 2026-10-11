@@ -1,45 +1,145 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script>
-/* Dev servers often serve this page at "/admin" (no trailing slash), which breaks relative CSS/JS paths.
-   Pin a <base> to the admin folder so admin.css, admin.js and ../js/config.js always resolve. */
-(function(){var p=location.pathname;p=(/\/$/.test(p)||/\.html?$/i.test(p))?p.replace(/[^\/]*$/,''):p+'/';document.write('<base href="'+p+'">');})();
-</script>
-<meta name="robots" content="noindex,nofollow">
-<link rel="icon" type="image/png" href="../favicon.png">
-<link rel="apple-touch-icon" href="../favicon.png">
-<title>Admin Panel</title>
-<link rel="stylesheet" href="admin.css">
-</head>
-<body>
-<section id="login" class="center">
-  <form id="loginForm" class="card login">
-    <h1>Admin <span class="grad">Login</span></h1>
-    <p class="hint">Sign in with the admin username and password from your backend <code>.env</code> (created by <code>npm run seed</code>).</p>
-    <div class="fld"><span class="lb">Username</span><input id="lu" autocomplete="username" required></div>
-    <div class="fld"><span class="lb">Password</span><input id="lp" type="password" autocomplete="current-password" required></div>
-    <details><summary>Backend URL</summary>
-      <div class="fld"><span class="lb">API base URL (no /api)</span><input id="lapi" placeholder="http://localhost:5000"></div>
-    </details>
-    <button class="btn p" type="submit">Sign in</button>
-    <p id="lerr" class="err"></p>
-  </form>
-</section>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div id="app" hidden>
-  <header class="top-bar">
-    <b class="brand">Aleem Patel <span class="grad">Admin</span></b>
-    <div class="acts"><a class="btn sm" href="../index.html" target="_blank" rel="noopener">View site</a><button class="btn sm" id="logoutBtn">Logout</button></div>
-  </header>
-  <div class="layout">
-    <nav id="side"></nav>
-    <main id="main"></main>
+  <!-- Keep relative admin assets working on /admin and /admin/ -->
+  <script>
+    (function () {
+      var path = window.location.pathname;
+
+      if (/\/admin\/?$/.test(path)) {
+        path = path.replace(/\/?$/, "/");
+      } else if (/\/[^/]+\.html?$/i.test(path)) {
+        path = path.replace(/[^/]+$/, "");
+      } else {
+        path = path.endsWith("/") ? path : path + "/";
+      }
+
+      document.write('<base href="' + path + '">');
+    })();
+  </script>
+
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0b12">
+  <meta name="description" content="Aleem Patel portfolio administration panel">
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="apple-touch-icon" href="../favicon.png">
+
+  <title>Admin Login | Aleem Patel</title>
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+  <!-- Admin Login -->
+  <section id="login" class="center">
+    <form id="loginForm" class="card login">
+      <h1>Admin <span class="grad">Login</span></h1>
+
+      <p class="hint">
+        Sign in with the admin username and password configured in your
+        backend <code>.env</code> file.
+      </p>
+
+      <div class="fld">
+        <label class="lb" for="lu">Username</label>
+        <input
+          id="lu"
+          name="username"
+          type="text"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="fld">
+        <label class="lb" for="lp">Password</label>
+        <input
+          id="lp"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <details>
+        <summary>Backend URL</summary>
+
+        <div class="fld">
+          <label class="lb" for="lapi">
+            API base URL (no /api)
+          </label>
+
+          <input
+            id="lapi"
+            name="apiBaseUrl"
+            type="url"
+            placeholder="https://api.aleempatel.dev"
+            value="https://api.aleempatel.dev"
+            autocomplete="url"
+            spellcheck="false"
+          >
+
+          <small class="hint">
+            Production API: https://api.aleempatel.dev
+          </small>
+        </div>
+      </details>
+
+      <button class="btn p" type="submit">
+        Sign in
+      </button>
+
+      <p
+        id="lerr"
+        class="err"
+        role="alert"
+        aria-live="polite"
+      ></p>
+    </form>
+  </section>
+
+  <!-- Admin Dashboard -->
+  <div id="app" hidden>
+    <header class="top-bar">
+      <b class="brand">
+        Aleem Patel <span class="grad">Admin</span>
+      </b>
+
+      <div class="acts">
+        <a
+          class="btn sm"
+          href="../index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View site
+        </a>
+
+        <button
+          class="btn sm"
+          id="logoutBtn"
+          type="button"
+        >
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav id="side" aria-label="Admin navigation"></nav>
+      <main id="main"></main>
+    </div>
   </div>
-</div>
-<script src="../js/config.js"></script>
-<script src="admin.js"></script>
+
+  <!-- Load configuration before admin logic -->
+  <script src="../js/config.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
+```

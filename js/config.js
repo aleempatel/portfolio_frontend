@@ -1,6 +1,6 @@
 /* Frontend configuration.
    API_BASE = where your backend runs (no trailing slash, no /api).
      local dev:   'http://localhost:5000'
-     production:  'https://api.yourdomain.com'
+     production:  'https://api.aleempatel.dev'
    The admin panel can also override this from its login screen / Settings tab (stored in the browser). */
-window.APP_CONFIG = { API_BASE: 'http://localhost:5000' };
+window.APP_CONFIG = { API_BASE: 'https://api.aleempatel.dev' };
