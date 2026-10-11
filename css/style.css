@@ -245,3 +245,7 @@ footer .adm:hover,footer .adm:focus-visible{opacity:1;color:var(--ac2)}
 :root[data-theme="light"] .tc .fnm{color:#0e7490}
 :root[data-theme="light"] .tc .st{color:#15803d}
 :root[data-theme="light"] .tc .cur{background:#7c3aed;color:#7c3aed}
+/* separate profile picture per theme */
+.photo .pic-light{display:none}
+:root[data-theme="light"] .photo .pic-light{display:block}
+:root[data-theme="light"] .photo .pic-dark{display:none}

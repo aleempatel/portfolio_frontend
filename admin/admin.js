@@ -154,23 +154,36 @@ function tabHero() {
 }
 
 function tabAbout() {
-  const p = S.profile, has = !!p.profilePicture;
-  main().innerHTML = head('About section', 'Edited separately from the hero: profile picture, About text (blank line = new paragraph) and the tag pills.') +
-    '<div class="card"><h3>Profile picture</h3><div class="pp"><div class="ppimg">' + (has ? '<img src="' + esc(p.profilePicture) + '" alt="Profile">' : 'No picture') + '</div><div class="acts">' +
-    '<input type="file" id="picFile" accept="image/jpeg,image/png,image/webp,image/gif" hidden><button class="btn p" id="picUp">' + (has ? 'Replace picture' : 'Upload picture') + '</button>' +
-    (has ? '<button class="btn danger" id="picDel">Delete picture</button>' : '') + '</div></div><p class="hint" style="margin-top:12px">JPG, PNG, WEBP or GIF, up to 5 MB.</p></div>';
-  $('#picUp').onclick = () => $('#picFile').click();
-  $('#picFile').onchange = async (e) => {
-    const file = e.target.files[0]; if (!file) return;
-    if (file.size > 5 * 1024 * 1024) return toast('Picture must be 5 MB or smaller.', true);
-    const fd = new FormData(); fd.append('picture', file); $('#picUp').disabled = true; $('#picUp').textContent = 'Uploading...';
-    try { S.profile = (await api('/profile/picture', { method: 'POST', form: fd })).data; toast('Picture updated.'); } catch (er) { toast(er.message, true); }
-    tabAbout();
+  const p = S.profile;
+  // One picture per theme: the dark theme uses `profilePicture`, the light theme `profilePictureLight`.
+  const PICS = [
+    { id: 'dark', key: 'profilePicture', route: '/profile/picture', label: 'Dark theme picture' },
+    { id: 'light', key: 'profilePictureLight', route: '/profile/picture/light', label: 'Light theme picture' }
+  ];
+  const picHtml = (c) => {
+    const has = !!p[c.key];
+    return '<div class="pp" style="margin-bottom:18px"><div class="ppimg">' + (has ? '<img src="' + esc(p[c.key]) + '" alt="' + esc(c.label) + '">' : 'No picture') + '</div><div class="acts">' +
+      '<b style="width:100%">' + c.label + '</b>' +
+      '<input type="file" id="picFile_' + c.id + '" accept="image/jpeg,image/png,image/webp,image/gif" hidden><button class="btn p" id="picUp_' + c.id + '">' + (has ? 'Replace picture' : 'Upload picture') + '</button>' +
+      (has ? '<button class="btn danger" id="picDel_' + c.id + '">Delete picture</button>' : '') + '</div></div>';
   };
-  if (has) $('#picDel').onclick = async () => {
-    if (!confirm('Delete the profile picture?')) return;
-    try { S.profile = (await api('/profile/picture', { method: 'DELETE' })).data; toast('Picture deleted.'); tabAbout(); } catch (er) { toast(er.message, true); }
-  };
+  main().innerHTML = head('About section', 'Edited separately from the hero: profile pictures (one for each theme), About text (blank line = new paragraph) and the tag pills.') +
+    '<div class="card"><h3>Profile pictures</h3>' + PICS.map(picHtml).join('') +
+    '<p class="hint">JPG, PNG, WEBP or GIF, up to 5 MB each. The website shows the matching picture when a visitor switches between dark and light theme. If you upload only one, it is used for both themes.</p></div>';
+  PICS.forEach((c) => {
+    $('#picUp_' + c.id).onclick = () => $('#picFile_' + c.id).click();
+    $('#picFile_' + c.id).onchange = async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      if (file.size > 5 * 1024 * 1024) return toast('Picture must be 5 MB or smaller.', true);
+      const fd = new FormData(); fd.append('picture', file); $('#picUp_' + c.id).disabled = true; $('#picUp_' + c.id).textContent = 'Uploading...';
+      try { S.profile = (await api(c.route, { method: 'POST', form: fd })).data; toast(c.label + ' updated.'); } catch (er) { toast(er.message, true); }
+      tabAbout();
+    };
+    if (p[c.key]) $('#picDel_' + c.id).onclick = async () => {
+      if (!confirm('Delete the ' + c.label.toLowerCase() + '?')) return;
+      try { S.profile = (await api(c.route, { method: 'DELETE' })).data; toast(c.label + ' deleted.'); tabAbout(); } catch (er) { toast(er.message, true); }
+    };
+  });
   const f = formEl([
     { k: 'aboutBio', label: 'About text', type: 'textarea', rows: 7 },
     { k: 'aboutTags', label: 'About tags (pills under the text)', type: 'tags', ph: 'e.g. Deep Learning' }

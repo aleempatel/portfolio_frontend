@@ -63,11 +63,14 @@ function renderHero(p) {
 
 function renderAbout(p) {
   const tags = (p.aboutTags || []).filter(Boolean);
-  const has = !!(p.aboutBio || p.profilePicture || tags.length);
+  const dk = p.profilePicture || p.profilePictureLight, lt = p.profilePictureLight || p.profilePicture; // missing one falls back to the other
+  const has = !!(p.aboutBio || dk || tags.length);
   show(q1('#about'), has); navLink('about', has);
   if (!has) return;
   const ph = q1('#aboutPhoto');
-  if (p.profilePicture) ph.innerHTML = '<img src="' + esc(p.profilePicture) + '" alt="' + esc(p.name ? 'Portrait of ' + p.name : 'Profile picture') + '" width="380" height="475" loading="lazy" decoding="async">';
+  const alt = esc(p.name ? 'Portrait of ' + p.name : 'Profile picture');
+  const img = (u, c) => '<img class="' + c + '" src="' + esc(u) + '" alt="' + alt + '" width="380" height="475" loading="lazy" decoding="async">';
+  if (dk) ph.innerHTML = dk === lt ? img(dk, 'pic-both') : img(dk, 'pic-dark') + img(lt, 'pic-light');
   else ph.textContent = (p.name || '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase() || '\u2022';
   q1('#aboutText').innerHTML = String(p.aboutBio || '').split(/\n+/).map((t) => t.trim()).filter(Boolean).map((t) => '<p>' + esc(t) + '</p>').join('');
   const box = q1('#aboutTags');
