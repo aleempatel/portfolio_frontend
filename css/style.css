@@ -269,3 +269,16 @@ section[style*="--bg2"]{background:color-mix(in srgb,var(--bg2) 45%,transparent)
 /* no backdrop-filter support, or the visitor asked for less transparency: fall back to solid cards */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){:root .tilt,:root .cert,:root .chip,:root .pill,:root .fb,:root .pv,:root .ci,:root .ib,:root .cf{background:var(--card)}}
 @media(prefers-reduced-transparency:reduce){:root .tilt,:root .cert,:root .chip,:root .pill,:root .fb,:root .pv,:root .ci,:root .ib,:root .cf,:root .btn:not(.p){background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* ===== Glass: performance fixes for phones / touch devices ===== */
+/* floating chips are animated - a blur behind a moving element is very expensive everywhere */
+:root .chip{-webkit-backdrop-filter:none;backdrop-filter:none}
+@media(max-width:860px),(pointer:coarse){
+  /* no live blur on phones: keep the translucent gradient + border + highlight look only */
+  :root .tilt,:root .cert,:root .pill,:root .fb,:root .pv,:root .ci,:root .ib,:root .cf,:root .btn:not(.p){-webkit-backdrop-filter:none;backdrop-filter:none}
+  :root nav,:root[data-theme="light"] nav{-webkit-backdrop-filter:none;backdrop-filter:none;background:color-mix(in srgb,var(--bg) 88%,transparent)}
+  /* blobs stay, but static: no per-frame repaint of a screen-sized layer */
+  body::before{animation:none;inset:0}
+  :root .tilt,:root .cert,:root .pv,:root .chip{box-shadow:0 4px 16px rgba(0,0,0,.18),var(--g-hi)}
+  :root[data-theme="light"] .tilt,:root[data-theme="light"] .cert,:root[data-theme="light"] .pv,:root[data-theme="light"] .chip{box-shadow:0 4px 16px rgba(88,48,160,.1),var(--g-hi)}
+}
