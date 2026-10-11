@@ -249,3 +249,23 @@ footer .adm:hover,footer .adm:focus-visible{opacity:1;color:var(--ac2)}
 .photo .pic-light{display:none}
 :root[data-theme="light"] .photo .pic-light{display:block}
 :root[data-theme="light"] .photo .pic-dark{display:none}
+
+/* ===== Glassmorphism ===== */
+:root{--g-bg:linear-gradient(135deg,rgba(255,255,255,.11),rgba(255,255,255,.03));--g-bd:rgba(255,255,255,.17);--g-sh:0 8px 32px rgba(0,0,0,.35);--g-hi:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 1px rgba(255,255,255,.03);--g-blur:blur(18px) saturate(160%);--o1:rgba(166,107,255,.34);--o2:rgba(79,209,255,.2);--o3:rgba(255,107,200,.16)}
+:root[data-theme="light"]{--g-bg:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.42));--g-bd:rgba(255,255,255,.85);--g-sh:0 8px 32px rgba(88,48,160,.14);--g-hi:inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(124,58,237,.05);--o1:rgba(124,58,237,.24);--o2:rgba(14,165,233,.2);--o3:rgba(236,72,153,.15)}
+/* soft colour blobs behind the page - glass needs something to blur */
+body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;background:radial-gradient(40vmax 40vmax at 12% 18%,var(--o1),transparent 70%),radial-gradient(35vmax 35vmax at 88% 30%,var(--o2),transparent 70%),radial-gradient(45vmax 45vmax at 55% 92%,var(--o3),transparent 70%);animation:orb 28s ease-in-out infinite alternate}
+@keyframes orb{to{transform:translate3d(-3%,2%,0) scale(1.08)}}
+/* sections with a flat background become see-through so the blobs show behind the glass */
+section[style*="--bg2"]{background:color-mix(in srgb,var(--bg2) 45%,transparent)!important}
+:root .tilt,:root .cert,:root .chip,:root .pill,:root .fb,:root .pv,:root .ci,:root .ib,:root .cf,:root .btn:not(.p){background:var(--g-bg);border-color:var(--g-bd);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
+:root .tilt,:root .cert,:root .pv,:root .chip{box-shadow:var(--g-sh),var(--g-hi)}
+:root .cf{box-shadow:0 0 50px rgba(166,107,255,.28),var(--g-sh),var(--g-hi)}
+:root .tilt:hover,:root .cert:hover{border-color:var(--ac);box-shadow:0 18px 48px rgba(124,58,237,.32),var(--g-hi)}
+:root nav,:root[data-theme="light"] nav{background:color-mix(in srgb,var(--bg) 42%,transparent);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);border-bottom-color:var(--g-bd);box-shadow:0 1px 0 rgba(255,255,255,.06),0 8px 28px rgba(0,0,0,.12)}
+:root .proj{border-color:var(--g-bd);box-shadow:var(--g-sh),var(--g-hi)}
+@media(max-width:860px){:root{--g-blur:blur(10px) saturate(140%)}}
+@media(prefers-reduced-motion:reduce){body::before{animation:none}}
+/* no backdrop-filter support, or the visitor asked for less transparency: fall back to solid cards */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){:root .tilt,:root .cert,:root .chip,:root .pill,:root .fb,:root .pv,:root .ci,:root .ib,:root .cf{background:var(--card)}}
+@media(prefers-reduced-transparency:reduce){:root .tilt,:root .cert,:root .chip,:root .pill,:root .fb,:root .pv,:root .ci,:root .ib,:root .cf,:root .btn:not(.p){background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
