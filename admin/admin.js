@@ -4,7 +4,13 @@ const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':
 const lsGet = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
 const lsSet = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) { /* storage blocked */ } };
 
-let BASE = (lsGet('apiBase') || (window.APP_CONFIG && APP_CONFIG.API_BASE) || '').replace(/\/+$/, '');
+// The backend URL can only be changed when the panel runs locally (localhost / file://).
+// On the live site it is fixed to APP_CONFIG.API_BASE, so the login password can never be
+// redirected to another server, and any stale value saved in the browser is cleared.
+const IS_LOCAL = ['localhost', '127.0.0.1', '[::1]', ''].includes(location.hostname);
+const CFG_BASE = (window.APP_CONFIG && APP_CONFIG.API_BASE) || '';
+if (!IS_LOCAL) lsSet('apiBase', '');
+let BASE = ((IS_LOCAL && lsGet('apiBase')) || CFG_BASE).replace(/\/+$/, '');
 let TOKEN = lsGet('adminToken');
 const S = { profile: {}, skills: [], projects: [], education: [], courses: [], experience: [] };
 const MAX_IMAGES = 50;
@@ -367,10 +373,10 @@ async function importSample() {
 
 function tabSettings() {
   main().innerHTML = head('Settings') +
-    '<div class="card"><h3>Backend URL</h3><div class="fld"><span class="lb">API base URL (no /api)</span><input id="sApi" value="' + esc(BASE) + '"></div><div class="bar"><button class="btn p" id="sApiSave">Save URL</button></div></div>' +
+    (IS_LOCAL ? '<div class="card"><h3>Backend URL (local only)</h3><div class="fld"><span class="lb">API base URL (no /api)</span><input id="sApi" value="' + esc(BASE) + '"></div><div class="bar"><button class="btn p" id="sApiSave">Save URL</button></div></div>' : '') +
     '<div class="card"><h3>Change password</h3><div class="fgrid"><div class="fld"><span class="lb">Current password</span><input id="pc" type="password" autocomplete="current-password"></div><div class="fld"><span class="lb">New password (min 6)</span><input id="pn" type="password" autocomplete="new-password"></div></div><div class="bar"><button class="btn p" id="pSave">Update password</button></div></div>' +
     '<div class="card"><h3>Sample content</h3><p class="hint">First time? Fill the empty parts of the site with the default portfolio content, then edit it. Existing content is never overwritten.</p><button class="btn" id="sample">Add sample content</button></div>';
-  $('#sApiSave').onclick = () => { BASE = $('#sApi').value.trim().replace(/\/+$/, ''); lsSet('apiBase', BASE); toast('Backend URL saved.'); };
+  if (IS_LOCAL) $('#sApiSave').onclick = () => { BASE = $('#sApi').value.trim().replace(/\/+$/, ''); lsSet('apiBase', BASE); toast('Backend URL saved.'); };
   $('#pSave').onclick = async () => {
     try { await api('/auth/change-password', { method: 'PUT', body: { currentPassword: $('#pc').value, newPassword: $('#pn').value } }); toast('Password updated.'); $('#pc').value = ''; $('#pn').value = ''; } catch (e) { toast(e.message, true); }
   };
@@ -393,10 +399,10 @@ async function enter() {
   try { await loadAll(); go(tab); } catch (e) { toast(e.message, true); }
 }
 function logout() { TOKEN = ''; lsSet('adminToken', ''); $('#app').hidden = true; $('#login').hidden = false; }
-$('#lapi').value = BASE;
+if (IS_LOCAL) $('#lapi').value = BASE; else { const box = $('#apiBox'); if (box) box.remove(); }
 $('#loginForm').addEventListener('submit', async (e) => {
   e.preventDefault(); const err = $('#lerr'), btn = $('button[type=submit]', e.target); err.textContent = '';
-  BASE = $('#lapi').value.trim().replace(/\/+$/, ''); lsSet('apiBase', BASE);
+  if (IS_LOCAL) { BASE = $('#lapi').value.trim().replace(/\/+$/, ''); lsSet('apiBase', BASE); }
   btn.disabled = true;
   try {
     const j = await api('/auth/login', { method: 'POST', body: { username: $('#lu').value.trim(), password: $('#lp').value } });
