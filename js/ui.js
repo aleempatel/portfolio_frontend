@@ -13,7 +13,10 @@ const lk=document.querySelector('.links');
 document.getElementById('bg2').onclick=()=>lk.classList.toggle('open');
 nl.forEach(a=>a.addEventListener('click',()=>lk.classList.remove('open')));
 // theme toggle
-const th=document.getElementById('th'),sync=()=>th.setAttribute('aria-checked',document.documentElement.dataset.theme==='light');th.onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'':'light';sync()};sync();
+/* the site opens in the LIGHT theme (data-theme="light" is set on <html>); the switch toggles light <-> dark */
+const th=document.getElementById('th'),tc=document.querySelector('meta[name="theme-color"]'),
+  sync=()=>{const light=document.documentElement.dataset.theme!=='dark';th.setAttribute('aria-checked',light);if(tc)tc.setAttribute('content',light?'#f6f3ff':'#08050e')};
+th.onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}sync()};sync();
 // counters
 const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;co.unobserve(e.target);const el=e.target,n=+el.dataset.n,s=el.dataset.s||'';let t0;const st=ts=>{t0=t0||ts;const p=Math.min(1,(ts-t0)/1200);el.textContent=Math.round(n*(1-Math.pow(1-p,3)))+(p===1?s:'');p<1&&requestAnimationFrame(st)};requestAnimationFrame(st)}),{threshold:.6});
 // (re)bind effects for any new elements - called again after the API renders content
