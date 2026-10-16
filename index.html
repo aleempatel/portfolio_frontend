@@ -2,6 +2,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>
+/* Restore the visitor's last chosen theme before first paint (default stays light) */
+try{if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}
+</script>
+<script>
 /* Always open at the hero: ignore the browser's restored scroll position and any #section in the URL */
 try{history.scrollRestoration='manual'}catch(e){}
 if(location.hash){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
@@ -12,25 +16,36 @@ try{scrollTo({top:0,left:0,behavior:'instant'})}catch(e){scrollTo(0,0)}
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <title>Aleem Patel — Data Science &amp; AI</title>
-<meta name="description" content="BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau, I…">
+<meta name="description" content="BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau.">
 <meta name="author" content="Aleem Patel">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="application-name" content="Aleem Patel">
 <meta name="apple-mobile-web-app-title" content="Aleem Patel">
 <meta name="theme-color" content="#f6f3ff">
+<script>try{if(localStorage.getItem('theme')==='dark')document.querySelector('meta[name="theme-color"]').setAttribute('content','#08050e')}catch(e){}</script>
 <link rel="canonical" href="https://aleempatel.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Aleem Patel">
 <meta property="og:title" content="Aleem Patel — Data Science &amp; AI">
-<meta property="og:description" content="BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau, I…">
+<meta property="og:description" content="BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau.">
 <meta property="og:url" content="https://aleempatel.dev/">
-<meta property="og:image" content="https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/profile/1791711185773-f7a969dac4f29602.webp">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://aleempatel.dev/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Aleem Patel — Data Science &amp; AI">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Aleem Patel — Data Science &amp; AI">
-<meta name="twitter:description" content="BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau, I…">
-<meta name="twitter:image" content="https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/profile/1791711185773-f7a969dac4f29602.webp">
-<script type="application/ld+json" id="ldPerson">{"@context":"https://schema.org","@type":"Person","name":"Aleem Patel","jobTitle":"Data Science & AI","url":"https://aleempatel.dev/","image":"https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/profile/1791711185773-f7a969dac4f29602.webp","description":"BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau, I…","sameAs":["https://github.com/aleempatel","https://www.linkedin.com/in/aleem-rizwan/"]}</script>
-<script type="application/ld+json" id="ldSite">{"@context":"https://schema.org","@type":"WebSite","@id":"https://aleempatel.dev/#website","name":"Aleem Patel","alternateName":"Aleem Patel Portfolio","url":"https://aleempatel.dev/","inLanguage":"en"}</script>
+<meta name="twitter:description" content="BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau.">
+<meta name="twitter:image" content="https://aleempatel.dev/og-image.jpg">
+<meta name="twitter:image:alt" content="Aleem Patel — Data Science &amp; AI">
+<script type="application/ld+json" id="ldPerson">{"@context":"https://schema.org","@type":"Person","name":"Aleem Patel","jobTitle":"Data Science & AI","url":"https://aleempatel.dev/","image":"https://aleempatel.dev/og-image.jpg","description":"BS Data Science student skilled in Data Analytics, with a strong interest in AI and Machine Learning. Proficient in Python, SQL, Power BI, and Tableau, I transform data into meaningful insights to support smarter, data-driven decisions.","sameAs":["https://github.com/aleempatel","https://www.linkedin.com/in/aleem-rizwan/"],"@id":"https://aleempatel.dev/#person","mainEntityOfPage":"https://aleempatel.dev/","address":{"@type":"PostalAddress","addressLocality":"Karachi","addressCountry":"PK"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Virtual University of Pakistan"},"knowsAbout":["Data Science","Data Analytics","Data Visualization","Artificial Intelligence","Machine Learning","Python","SQL","Power BI","Tableau","Explainable AI"]}</script>
+<script type="application/ld+json" id="ldSite">{"@context":"https://schema.org","@type":"WebSite","@id":"https://aleempatel.dev/#website","name":"Aleem Patel","alternateName":"Aleem Patel Portfolio","url":"https://aleempatel.dev/","inLanguage":"en","about":{"@id":"https://aleempatel.dev/#person"},"publisher":{"@id":"https://aleempatel.dev/#person"}}</script>
+<script type="application/ld+json" id="ldProjects">{"@context":"https://schema.org","@type":"ItemList","name":"Featured Projects","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"SoftwareSourceCode","name":"Global Happiness & Well-Being Dashboard","description":"An interactive Power BI dashboard analyzing global happiness and well-being trends, comparing countries and exploring key indicators that influence happiness.","author":{"@id":"https://aleempatel.dev/#person"},"codeRepository":"https://github.com/aleempatel/global-happiness-dashboard","image":"https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/project/1791808783074-931ad528ab728fa6.webp"}},{"@type":"ListItem","position":2,"item":{"@type":"SoftwareSourceCode","name":"Titanic Survival Prediction — ML Classification","description":"Predicted Titanic passenger survival using logistic regression and random forest models, achieving ~84% accuracy through exploratory data analysis and feature engineering.","author":{"@id":"https://aleempatel.dev/#person"},"codeRepository":"https://github.com/aleempatel/titanic-survival-prediction","image":"https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/project/1787392836284-19718e612c9e35fb.png"}},{"@type":"ListItem","position":3,"item":{"@type":"SoftwareSourceCode","name":"Customer Churn Prediction with Explainable AI (SHAP)","description":"Built and compared multiple ML models to predict telecom customer churn, achieving 0.847 ROC-AUC with XGBoost, and used SHAP for model explainability at both global and individual customer level.","author":{"@id":"https://aleempatel.dev/#person"},"codeRepository":"https://github.com/aleempatel/customer-churn-prediction","image":"https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/project/1787399212186-2528fcfecc32e38e.png"}},{"@type":"ListItem","position":4,"item":{"@type":"SoftwareSourceCode","name":"Credit Card Fraud Detection — Imbalanced Classification with SHAP & Drift Analysis","description":"End-to-end fraud detection pipeline on highly imbalanced credit card transaction data (0.167% fraud), comparing 5 models and imbalance-handling strategies, achieving 0.968 ROC-AUC / 0.808 PR-AUC with XGBoost, plus SHAP explainability, cost-sensitive thresholding, and model drift analysis.","author":{"@id":"https://aleempatel.dev/#person"},"codeRepository":"https://github.com/aleempatel/creditcard-fraud-detection","image":"https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com/uploads/project/1787400240971-02cc2a8ead342fa5.png"}}]}</script>
+<link rel="preconnect" href="https://aleem-portfolio-files.s3.ap-south-1.amazonaws.com" crossorigin>
+<link rel="dns-prefetch" href="https://api.aleempatel.dev">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
@@ -76,7 +91,7 @@ try{scrollTo({top:0,left:0,behavior:'instant'})}catch(e){scrollTo(0,0)}
 
 <div class="rv"><span class="eyebrow">01 / About</span><h2>Data. Intelligence. <span class="grad">Impact.</span></h2>
 <div id="aboutText"><p>I’m Aleem Patel, a BS Data Science student at Virtual University of Pakistan, passionate about Data Analytics, Artificial Intelligence, and Machine Learning. I work with Python, SQL, Power BI, Tableau, Excel, and MongoDB to analyze data, uncover meaningful insights, and support data-driven decision-making. With an interest in statistical analysis, data visualization, and predictive modeling, I aim to develop innovative solutions to real-world challenges and build a career in Data Science and AI.</p></div>
-<div class="tags" id="aboutTags"><a href="#skills">Machine Learning</a><a href="#skills">Deep Learning</a><a href="#skills">AI Enginnering</a></div></div>
+<div class="tags" id="aboutTags"><a href="#skills">Machine Learning</a><a href="#skills">Deep Learning</a><a href="#skills">AI Engineering</a></div></div>
 </div></section>
 
 <section id="skills" style="background:var(--bg2)"><div class="wrap">
@@ -119,7 +134,7 @@ try{scrollTo({top:0,left:0,behavior:'instant'})}catch(e){scrollTo(0,0)}
 <p class="fst" id="fst" role="status" aria-live="polite"></p>
 </form></div></div></section>
 
-<footer><div class="wrap"><span id="footName">All rights reserved to Aleem Patel</span></div><a class="adm" href="admin/index.html" aria-label="Admin">Admin</a></footer>
+<footer><div class="wrap"><span id="footName">All rights reserved to Aleem Patel</span></div><a class="adm" href="admin/index.html" rel="nofollow" aria-label="Admin">Admin</a></footer>
 
 <div class="dk" id="deck" role="dialog" aria-modal="true"><div class="dkh"><div><h3></h3><small></small><p class="dkd"></p></div><button class="ib cl" aria-label="Close">✕</button></div><div class="trk"></div><div class="dkf"><button class="ib pr" aria-label="Previous">←</button><div class="dots2"></div><button class="ib nx" aria-label="Next">→</button></div></div>
 <div class="rm" id="resumeModal" role="dialog" aria-modal="true" aria-label="Resume"><div class="rmh"><b>Resume</b><div class="rma"><a class="btn p" id="rDl" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"></path></svg> Download</a><a class="btn" id="rOpen" href="#" target="_blank" rel="noopener">Open in new tab</a><button class="ib" id="rClose" aria-label="Close">✕</button></div></div><iframe id="rFrame" title="Resume preview"></iframe></div>
